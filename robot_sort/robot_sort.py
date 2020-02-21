@@ -98,34 +98,29 @@ class SortingRobot:
         Sort the robot's list.
         """
         # Fill this out
-        self.set_light_on()  # initalize the robots memory with light
-        while self.light_is_on() == True:
-            self.set_light_off()  # reset & end inital while loop
-            # move as far right as possible
-            while self.can_move_right() == True:
-                self.swap_item()
-                self.move_right()
-                # Compare item being held by robot to current item in list. If held item > current item, swap.
-                if self.compare_item() == 1:
+        
+        # base case check
+        if not self.can_move_right() and not self.set_light_on():
+            return
+        else:
+            self.set_light_on()
+            self.swap_item()
+            #Returns True if the robot can move right or False if it's at the end of the list.
+            while self.can_move_right(): 
+                # continue moving to the right until the list ends
+                self.move_right()  
+                self.compare_item()
+                
+                # If the held item's value is greater than item in list swap item.
+                if self.compare_item() == 1: 
                     self.swap_item()
-                    self.set_light_on()
-                # Move through the rest of list
+            while self.compare_item() is not None:
+                self.set_light_off()
                 self.move_left()
-                self.swap_item()
-                self.move_right()
-            # move as far left as possible
-            while self.can_move_left() == True:
-                self.swap_item()
-                self.move_left()
-                # Compare item being held by robot to current item in list. If held item < current item, swap.
-                if self.compare_item() == -1:
-                    self.swap_item()
-                    self.set_light_on()
-                # Move through the rest of list
-                self.move_right()
-                self.swap_item()
-                self.move_left()
-        return
+                
+            self.swap_item()
+            self.move_right()
+            return self.sort()
 
 
 
